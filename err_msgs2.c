@@ -1,7 +1,7 @@
 #include "shell.h"
 
 char *error_126(char ** args);
-char *error_127(char *args);
+char *error_127(char **args);
 
 /**
  * error_126 - Creates an error message for permission denied failures.
@@ -10,29 +10,29 @@ char *error_127(char *args);
  * Return: The error string.
  */
 
-char *error_126(char ** args)
+char *error_126(char **args)
 {
-        char *error, hist_str;
+        char *error, *hist_str;
         int lens;
 
         hist_str = _itoa(hist);
         if(!hist_str)
                 return(NULL);
         
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 24;
-        error = malloc(sizeof(char) * (len + 1));
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 24;
+        error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
                 free(hist_str);
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": ");
-        _strcat(error, args[0]);
-        _strcat(error, ": Permission denied\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": ");
+        _strcats(error, args[0]);
+        _strcats(error, ": Permission denied\n");
 
         free(hist_str);
         return(error);
@@ -45,16 +45,16 @@ char *error_126(char ** args)
  * Return: The error string.
  */
 
-cahr *error_127(char **args)
+char *error_127(char **args)
 {
-        char *error, hist_str;
+        char *error, *hist_str;
         int lens;
 
         hist_str = _itoa(hist);
         if(!hist_str)
                 return(NULL);
         
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 16;
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 16;
         error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
@@ -62,12 +62,12 @@ cahr *error_127(char **args)
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": ");
-        _strcat(error, args[0]);
-        _strcat(error, ": not found\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": ");
+        _strcats(error, args[0]);
+        _strcats(error, ": not found\n");
 
         free(hist_str);
         return(error);

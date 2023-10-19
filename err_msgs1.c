@@ -23,20 +23,20 @@ char *error_env(char **args)
                 return(NULL);
         
         args--;
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 45;
-        error - malloc(sizeof(char) * (lens + 1));
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 45;
+        error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
                 free(hist_str);
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": ");
-        _strcat(error, args[0]);
-        _strcat(error, ": Unable to add/remove from environment\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": ");
+        _strcats(error, args[0]);
+        _strcats(error, ": Unable to add/remove from environment\n");
 
         free(hist_str);
         return(error);
@@ -54,15 +54,15 @@ char *error_1(char **args)
         char *error;
         int lens;
 
-        lens = _strlen(name) + _strlen(args[0]) + 13;
+        lens = _strlens(name) + _strlens(args[0]) + 13;
         error = malloc(sizeof(char) * (lens + 1));
         
         if(!error)
                 return(NULL);
         
-        _strcpy(error, "alias: ");
-        _strcat(error, args[0]);
-        _strcat(error, "not found\n");
+        _strcpys(error, "alias: ");
+        _strcats(error, args[0]);
+        _strcats(error, "not found\n");
 
         return(error);
 }
@@ -76,14 +76,14 @@ char *error_1(char **args)
 
 char *error_2_exit(char **args)
 {
-        chat *error, *hist_str;
+        char *error, *hist_str;
         int lens;
 
         hist_str = _itoa(hist);
         if(!hist_str)
                 return(NULL);
         
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 27;
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 27;
         error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
@@ -91,12 +91,12 @@ char *error_2_exit(char **args)
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": exit: Illegal number: ");
-        _strcat(error, args[0]);
-        _strcat(error, "\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": exit: Illegal number: ");
+        _strcats(error, args[0]);
+        _strcats(error, "\n");
 
         free(hist_str);
         return(error);
@@ -109,9 +109,9 @@ char *error_2_exit(char **args)
  * Return: The error string.
  */
 
-char *error_2_cd(char *args)
+char *error_2_cd(char **args)
 {
-        char *error, *hint_str;
+        char *error, *hist_str;
         int lens;
 
         hist_str = _itoa(hist);
@@ -120,7 +120,7 @@ char *error_2_cd(char *args)
         
         if(args[0][0] == '-')
                 args[0][2] = '\0';
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 24;
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 24;
         error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
@@ -128,15 +128,15 @@ char *error_2_cd(char *args)
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
         if(args[0][0] == '-')
-                _strcat(error, ": cd: Illegat option ");
+                _strcats(error, ": cd: Illegat option ");
         else
-                _strcat(error, ": cd: can't cd to ");
-        _strcat(error, args[0]);
-        _strcat(error, "\n");
+                _strcats(error, ": cd: can't cd to ");
+        _strcats(error, args[0]);
+        _strcats(error, "\n");
 
         free(hist_str);
         return(error);
@@ -158,7 +158,7 @@ char *error_2_syntax(char **args)
         if(!hist_str)
                 return(NULL);
         
-        lens = _strlen(name) + _strlen(hist_str) + _strlen(args[0]) + 33;
+        lens = _strlens(name) + _strlens(hist_str) + _strlens(args[0]) + 33;
         error = malloc(sizeof(char) * (lens + 1));
         if(!error)
         {
@@ -166,12 +166,12 @@ char *error_2_syntax(char **args)
                 return(NULL);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": Syntax error: \"");
-        _strcat(error, args[0]);
-        _strcat(error, "\"unexpected\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": Syntax error: \"");
+        _strcats(error, args[0]);
+        _strcats(error, "\"unexpected\n");
 
         free(hist_str);
         return(error);

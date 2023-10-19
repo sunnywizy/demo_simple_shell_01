@@ -32,12 +32,12 @@ int shellby_alias(char **args, char __attribute__((__unused__)) **fronts)
     for(n = 0; args[n]; n++)
     {
         temp = aliases;
-        value = _strchr(args[n], '=');
+        value =  _strchrs(args[n], '=');
         if(!value)
         {
             while(temp)
             {
-                if(_strcmp(args[n], temp->name) == 0)
+                if(_strcmps(args[n], temp->name) == 0)
                 {
                     print_alias(temp);
                     break;
@@ -67,7 +67,7 @@ void set_alias(char *var_name, char *value)
 
     *value = '\0';
     value++;
-    lens = _strlen(value) - _strspn(value, "'\"");
+    lens = _strlens(value) - _strspns(value, "'\"");
     new_value = malloc(sizeof(char) * (lens + 1));
     if(!new_value)
             return;
@@ -79,7 +79,7 @@ void set_alias(char *var_name, char *value)
     new_value[l] = '\0';
     while (temp)
     {
-        if(_strcmp(var_name, temp->name) == 0)
+        if(_strcmps(var_name, temp->name) == 0)
         {
             free(temp->value);
             temp->value = new_value;
@@ -88,7 +88,7 @@ void set_alias(char *var_name, char *value)
         temp = temp->next;
     }
     if(!temp)
-            add_alias_end(&aliases, var-name, new_value);
+            add_alias_end(&aliases, var_name, new_value);
 }
 
 /** 
@@ -99,16 +99,16 @@ void set_alias(char *var_name, char *value)
 void print_alias(alias_t *alias)
 {
     char *alias_strings;
-    int len = _strlen(alias->name) + _strlen(alias->value) + 4;
+    int len = _strlens(alias->name) + _strlens(alias->value) + 4;
     alias_strings = malloc(sizeof(char) * (len + 1));
 
     if(!alias_strings)
             return;
     
-    _strcpy(alias_strings, alias->name);
-    _strcat(alias_strings, "='");
-    _strcat(alias_strings, alias->value)
-    _strcat(alias_strings, "'\n");
+    _strcpys(alias_strings, alias->name);
+    _strcats(alias_strings, "='");
+    _strcats(alias_strings, alias->value);
+    _strcats(alias_strings, "'\n");
 
     write(STDOUT_FILENO, alias_strings, len);
     free(alias_strings);
@@ -124,10 +124,10 @@ void print_alias(alias_t *alias)
 char **replace_aliases(char **args)
 {
     alias_t *temp;
-    int name;
+    int n;
     char *new_value;
 
-    if(_strcmp(args[0], "alias") == 0)
+    if(_strcmps(args[0], "alias") == 0)
             return(args);
     
     for(n = 0; args[n]; n++)
@@ -135,15 +135,15 @@ char **replace_aliases(char **args)
         temp = aliases;
         while(temp)
         {
-            if(_strcmp(args[n], temp->name) == 0)
+            if(_strcmps(args[n], temp->name) == 0)
             {
-                new_value = malloc(sizeof(char) * (_strlen(temp->value) + 1));
+                new_value = malloc(sizeof(char) * (_strlens(temp->value) + 1));
                 if(!new_value)
                 {
                     free_args(args, args);
                     return(NULL);
                 }
-                _strcpy(new_value, temp->value);
+                _strcpys(new_value, temp->value);
                 free(args[n]);
                 args[n] = new_value;
                 n--;

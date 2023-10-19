@@ -58,7 +58,7 @@ int call_args(char **args, char **front, int *exe_ret)
                 return(*exe_ret);
         for(index = 0; args[index]; index++)
         {
-               if(_strncmp(args[index], "||", 2) == 0)
+               if(_strncmps(args[index], "||", 2) == 0)
                {
                         free(args[index]);
                         args[index] = NULL;
@@ -76,7 +76,7 @@ int call_args(char **args, char **front, int *exe_ret)
                                 return(ret);
                         }
                }
-               else if(_strncmp(args[index], "&&", 2) == 0)
+               else if(_strncmps(args[index], "&&", 2) == 0)
                {
                         free(args[index]);
                         args[index] = NULL;
@@ -89,7 +89,7 @@ int call_args(char **args, char **front, int *exe_ret)
                         }
                         else
                         {
-                                for(index++, args[index]; index++)
+                                for(index++; args[index]; index++)
                                         free(args[index]);
                                 return(ret);
                         }
@@ -166,7 +166,7 @@ int handle_args(int *exe_ret)
 
         for(index = 0; args[index]; index++)
         {
-                if(_strncmp(args[index], ";", 1) == 0)
+                if(_strncmps(args[index], ";", 1) == 0)
                 {
                         free(args[index]);
                         args[index] = NULL;

@@ -14,7 +14,7 @@ void logical_ops(char *line, ssize_t *new_len);
  */
 void handle_line(char **line, ssize_t read)
 {
-        char *old_line, new_line;
+        char *old_line, *new_line;
         char previous, current, next;
         size_t i, j;
         ssize_t new_len;
@@ -31,7 +31,7 @@ void handle_line(char **line, ssize_t read)
         {
                 current = old_line[i];
                 next = old_line[i + 1];
-                if(current == ';');
+                if(i != 0)
                 {
                         previous = old_line[i - 1];
                         if(current == ';')
@@ -167,7 +167,7 @@ void logical_ops(char *line, ssize_t *new_len)
 
         previous = *(line - 1);
         current = *line;
-        next = *(lne + 1);
+        next = *(line + 1);
 
         if(current == '&')
         {

@@ -20,7 +20,7 @@ int cant_opens(char *file_path)
         if(!hist_str)
                 return(127);
         
-        len = _strlen(name) + _strlen(hist_str) + _strlen(file_path) + 16;
+        len = _strlens(name) + _strlens(hist_str) + _strlens(file_path) + 16;
         error = malloc(sizeof(char) * (len + 1));
         if(!error)
         {
@@ -28,15 +28,15 @@ int cant_opens(char *file_path)
                 return(127);
         }
 
-        _strcpy(error, name);
-        _strcat(error, ": ");
-        _strcat(error, hist_str);
-        _strcat(error, ": Can't open ");
-        _strcat(error, file_path);
-        _strcat(error, "\n");
+        _strcpys(error, name);
+        _strcats(error, ": ");
+        _strcats(error, hist_str);
+        _strcats(error, ": Can't open ");
+        _strcats(error, file_path);
+        _strcats(error, "\n");
 
         free(hist_str);
-        write(STDRR_FILENO, error, len);
+        write(STDERR_FILENO, error, len);
         free(error);
         return(127);
 }
@@ -64,7 +64,7 @@ int proc_files_commands(char *file_path, int *exe_ret)
         file = open(file_path, O_RDONLY);
         if(file == -1)
         {
-                *exe_ret = cant_open(file_path);
+                *exe_ret = cant_opens(file_path);
                 return(*exe_ret);
         }
         line = malloc(sizeof(char) * old_size);
@@ -77,7 +77,7 @@ int proc_files_commands(char *file_path, int *exe_ret)
                 buffer[b_read] = '\0';
                 line_size += b_read;
                 line = _realloc(line, old_size, line_size);
-                _strcat(line, buffer);
+                _strcats(line, buffer);
                 old_size = line_size;
         } while(b_read);
         for(i = 0; line[i] == '\n'; i++)
@@ -93,7 +93,7 @@ int proc_files_commands(char *file_path, int *exe_ret)
         }
         variable_replacement(&line, exe_ret);
         handle_line(&line, line_size),
-        args = _strtok(line. " ");
+        args = _strtok(line, " ");
         free(line);
         if(!args)
                 return(0);
@@ -105,9 +105,9 @@ int proc_files_commands(char *file_path, int *exe_ret)
         }
         front = args;
 
-        for(i = 0; args[i], ";"; i++)
+        for(i = 0; args[i]; i++)
         {
-                if(_strncmp(args[i], ";", 1) == 0)
+                if(_strncmps(args[i], ";", 1) == 0)
                 {
                         free(args[i]);
                         args[i] = NULL;

@@ -39,7 +39,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
         }
 
         ptr_copy = ptr;
-        mem = malloc(sizeof(*ptr-copy) * new_size);
+        mem = malloc(sizeof(*ptr_copy) * new_size);
         if(mem == NULL)
         {
                 free(ptr);
@@ -62,7 +62,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  * @buffer: The string to assign to lineptr.
  * @b: The size of buffer.
  */
-void assign_lineptr(char **loineptr, size_t *n, char *buffer, size_t b)
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
 {
         if(*lineptr == NULL)
         {
@@ -82,7 +82,7 @@ void assign_lineptr(char **loineptr, size_t *n, char *buffer, size_t b)
         }
         else
         {
-                _strcpy(*lineptr, buffer);
+                _strcpys(*lineptr, buffer);
                 free(buffer);
         }
 }
@@ -107,7 +107,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
                 return(-1);
         input = 0;
 
-        buffer - mallco(sizeof(char) = 120);
+        buffer = malloc(sizeof(char) * 120);
         if(!buffer)
                 return(-1);
         
@@ -126,7 +126,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
                 }
 
                 if(input >= 120)
-                        buffer = _realloc(buffer, input, inut + 1);
+                        buffer = _realloc(buffer, input, input + 1);
                 
                 buffer[input] = c;
                 input++;

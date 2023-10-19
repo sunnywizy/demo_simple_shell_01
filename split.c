@@ -46,7 +46,7 @@ int counts_tokens(char *str, char *delim)
                 if(*(str + index) != *delim)
                 {
                          tokens++;
-                         index += token_len(str + index, delim);
+                         index += tokens_lens(str + index, delim);
                 }
         }
 
@@ -65,7 +65,7 @@ char **_strtok(char *line, char *delim)
         char **ptr;
         int index = 0, tokens, t, letters, l;
 
-        tokens = count_tokens(line, delim);
+        tokens = counts_tokens(line, delim);
         if(tokens == 0)
                 return(NULL);
         
@@ -78,7 +78,7 @@ char **_strtok(char *line, char *delim)
                 while(line[index] == *delim)
                         index++;
                 
-                letters = token_len(line + index, delim);
+                letters = tokens_lens(line + index, delim);
 
                 ptr[t] = malloc(sizeof(char) * (letters + 1));
                 if(!ptr[t])

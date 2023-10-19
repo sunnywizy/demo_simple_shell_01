@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void free_args(char **args, char *front);
+void free_args(char **args, char **front);
 char *get_pid(void);
 char *get_env_value(char *begnning, int lens);
 void variabale_replacement(char **args, int * exe_ret);
@@ -10,7 +10,7 @@ void variabale_replacement(char **args, int * exe_ret);
  * @args: A null-terminated double pointer containing commands/arguments.
  * @fronts: a double pointer to the beginnning of args.
  */
-void free_args(char **args, char *front)
+void free_args(char **args, char **front)
 {
         size_t i;
 
@@ -61,16 +61,16 @@ char *get_pid(void){
  *
  * Description: Variables aresorted in the format VARIABLE=VALUE.
  */
-char *get_env_value(char *begnning, int lens)
+char *get_env_value(char *beginning, int len)
 {
         char **var_addr;
-        char *relacement = NULL, *temp, *var;
+        char *replacement = NULL, *temp, *var;
 
         var = malloc(len + 1);
         if(!var)
                 return(NULL);
         var[0] = '\0';
-        _strncat(var, beginning, len);
+        _strncats(var, beginning, len);
 
         var_addr = _getenv(var);
         free(var);
@@ -80,9 +80,9 @@ char *get_env_value(char *begnning, int lens)
                 while(*temp != '=')
                         temp++;
                 temp++;
-                replacement = malloc(_strlen(temp) + 1);
+                replacement = malloc(_strlens(temp) + 1);
                 if(replacement)
-                        _strcpy(repacement, temp);
+                        _strcpys(replacement, temp);
         }
 
         return(replacement);
@@ -94,7 +94,7 @@ char *get_env_value(char *begnning, int lens)
  * @exe_ret: A pointer to the return value of the last executed command.
  * Description: Replaces $$ with the current PID, $? with the return value of the last executed program, and environmental variables preceded by $ with their corresponding value.
  */
-void variabale_replacement(char **args, int * exe_ret)
+void variabale_replacement(char **line, int *exe_ret)
 {
         int j, k = 0, len;
         char *replacement = NULL, *old_line = NULL, *new_line;
@@ -109,30 +109,35 @@ void variabale_replacement(char **args, int * exe_ret)
                                 replacement = get_pid();
                                 k = j + 2;
                         }
+                        else if (old_line[j + 1] == '?')
+                        {
+                                replacement = _itoa(*exe_ret);
+                                k = j + 2;
+                        }
                         else if(old_line[j + 1])
                         {
                                 /* extract the variable name to search for */
-                                for(k = j + 1; old_line[k] && old_line[k] != '$' && old_line[k] ' '; k++)
+                                for(k = j + 1; old_line[k] && old_line[k] != '$' && old_line[k] != ' '; k++)
                                         ;
                                 len = k - (j + 1);
                                 replacement = get_env_value(&old_line[j + 1], len);
                         }
-                        new_line = malloc(j + _strlen(replacement) + _strlen(&old_line[k]) + 1);
+                        new_line = malloc(j + _strlens(replacement) + _strlens(&old_line[k]) + 1);
                         if(!line)
                                 return;
                         new_line[0] = '\0';
-                        _strncat(new_line, old_line, j);
+                        _strncats(new_line, old_line, j);
                         if(replacement)
                         {
-                                _strcat(new-line, replacement);
+                                _strcats(new_line, replacement);
                                 free(replacement);
                                 replacement = NULL;
                         }
-                        _strcat(new_line, &old_line[k]);
+                        _strcats(new_line, &old_line[k]);
                         free(old_line);
                         *line = new_line;
                         old_line = new_line;
-                        j = 1
+                        j = 1;
                 }       
         }  
 }

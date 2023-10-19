@@ -57,7 +57,7 @@ int execute(char **args, char **front)
                 {
                         execve(command, args, environ);
                         if(errno == EACCES)
-                                ret = (create_error(args. 126))
+                                ret = (create_error(args, 126));
                         free_env();
                         free_args(args, front);
                         free_alias_list(aliases);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
         
         if(argc != 1)
         {
-                ret = proc-file_commands(argv[1], exe_ret);
+                ret = proc_file_commands(argv[1], exe_ret);
                 free_env();
                 free_alias_list(aliases);
                 return(*exe_ret);

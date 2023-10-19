@@ -25,13 +25,13 @@ char *get_location(char *command)
 
         while(dirs)
         {
-                temp = malloc(_strlen(dirs->dir) + _strlen(command) + 2);
+                temp = malloc(_strlens(dirs->dir) + _strlens(command) + 2);
                 if(!temp)
                         return(NULL);
                 
-                _strcpy(temp, dirs->dir);
-                _strcat(temp, "/");
-                _strcat(temp, command);
+                _strcpys(temp, dirs->dir);
+                _strcats(temp, "/");
+                _strcats(temp, command);
 
                 if(stat(temp, &st) == 0)
                 {
@@ -67,7 +67,7 @@ char *fill_path_dir(char *path)
                 if(path[i] == ':')
                 {
                         if(path[i + 1] == ':' || i == 0 || path[i + 1] == '\0')
-                                length += _strlen(pwd) + 1;
+                                length += _strlens(pwd) + 1;
                         else
                                 length++;
                 }
@@ -84,20 +84,20 @@ char *fill_path_dir(char *path)
                 {
                         if(i == 0)
                         {
-                                _strcat(path-copy, pwd);
-                                _strcat(path_copy, ":");
+                                _strcats(path_copy, pwd);
+                                _strcats(path_copy, ":");
                         }
                         else if(path[i + 1] == ':' || path[i + 1] == '\0')
                         {
-                                _strcat(path_copy, ":");
-                                _strcat(path_copy, pwd);
+                                _strcats(path_copy, ":");
+                                _strcats(path_copy, pwd);
                         }
                         else
-                                _strcat(path_copy, ":");
+                                _strcats(path_copy, ":");
                 }
                 else
                 {
-                        _strncat(path_copy, &path[i], 1);
+                        _strncats(path_copy, &path[i], 1);
                 }
         }
         return(path_copy);
@@ -126,7 +126,7 @@ list_t *get_path_dir(char *path)
         
         for(index = 0; dirs[index]; index++)
         {
-                if(add_node_end(&head, dirs[index]) .== NULL)
+                if(add_node_end(&head, dirs[index]) == NULL)
                 {
                        free_list(head);
                        free(dirs);

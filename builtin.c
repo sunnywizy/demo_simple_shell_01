@@ -29,7 +29,7 @@ int (*get_builtin(char *command))(char **args, char **front)
     
     for(n = 0; funcs[n].name; n++)
     {
-        if(_strcmp(funcs[n].name, command) == 0)
+        if(_strcmps(funcs[n].name, command) == 0)
                 break;
     }
     return(funcs[n].f);
@@ -71,7 +71,7 @@ int shellby_exit(char **args, char **front)
         return(-3);
     }
     
-    if(nu > max - 1)
+    if(num > max - 1)
             return(create_error(--args, 2));
     
     args -= 1;
@@ -93,7 +93,7 @@ int shellby_exit(char **args, char **front)
 
 int shellby_cd(char **args, char __attribute__((__unused__)) **front)
 {
-    char **dir_info, *new_linw = '\n';
+    char **dir_info, *new_line = "\n";
     char *oldpwd = NULL, *pwd = NULL;
     struct stat dir;
 
@@ -103,7 +103,7 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
 
     if(args[0])
     {
-        if(*(args[0]) == '-' || _strcmp(args[0], "--") == 0)
+        if(*(args[0]) == '-' || _strcmps(args[0], "--") == 0)
         {
             if((args[0][1] == '-' && args[0][2] == '\0') || args[0][1] == '\0')
             {
@@ -118,7 +118,7 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
         }
         else
         {
-            if(stat(args[0], &dir) == 0 && S_ISDIR(dir.st_mode) && ((dir.st_mode & S_INUSR) != 0))
+            if(stat(args[0], &dir) == 0 && S_ISDIR(dir.st_mode) && ((dir.st_mode & S_IWUSR) != 0))
                     chdir(args[0]);
             else
             {
@@ -135,7 +135,7 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
 
     pwd =getcwd(pwd, 0);
     if(!pwd)
-            return(-1)
+            return(-1);
     
     dir_info = malloc(sizeof(char *) * 2);
     if(!dir_info)
@@ -152,8 +152,8 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front)
             return(-1);
     if(args[0] && args[0][0] == '-' && args[0][1] != '-')
     {
-        write(STDOUT_FILENO, pwd, _strlen(pwd));
-        write(STDOUT_FILENO; new_line, 1);
+        write(STDOUT_FILENO, pwd, _strlens(pwd));
+        write(STDOUT_FILENO, new_line, 1);
     }
 
     free(oldpwd);
@@ -174,22 +174,22 @@ int shellby_help(char **args, char __attribute__((__unused__)) **front)
 {
     if(!args[0])
             help_all();
-    else if(_strcmp(args[0], "alias") == 0)
+    else if(_strcmps(args[0], "alias") == 0)
             help_alias();
-    else if(_strcmp(args[0], "cd") == 0)
+    else if(_strcmps(args[0], "cd") == 0)
             help_cd();
-    else if(_strcmp(args[0], "exit") == 0)
+    else if(_strcmps(args[0], "exit") == 0)
             help_exit();
-    else if(_strcmp(args[0], "env") == 0)
+    else if(_strcmps(args[0], "env") == 0)
             help_env();
-    else if(_strcmp(args[0], "setenv") == 0)
+    else if(_strcmps(args[0], "setenv") == 0)
             help_setenv();
-    else if(_strcmp(args[0], "unsetenv") == 0)
+    else if(_strcmps(args[0], "unsetenv") == 0)
             help_unsetenv();
-    else if(_strcmp(args[0], "help") == 0)
+    else if(_strcmps(args[0], "help") == 0)
             help_help();
     else
-            write(STDERR_FILENO, name, _strlen(name));
+            write(STDERR_FILENO, name, _strlens(name));
     
     return(0);
 }

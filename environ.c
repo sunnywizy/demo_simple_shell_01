@@ -20,24 +20,24 @@ char **_copyenv(void)
         for(size = 0; environ[size]; size++)
                 ;
         
-        new_environ = malloc(sizeoff(char *) * (size + 1));
+        new_environ = malloc(sizeof(char *) * (size + 1));
         if(!new_environ)
                 return(NULL);
         
         for(indexs = 0; environ[indexs]; indexs++)
         {
-                new_environ[indexs] = malloc(_strlen(environ[indexs]) + 1);
+                new_environ[indexs] = malloc(_strlens(environ[indexs]) + 1);
 
                if(!new_environ[indexs])
                {
                     for(indexs--; indexs >= 0; indexs--)
-                            free(new_environ[index]);
+                            free(new_environ[indexs]);
                     free(new_environ);
                     return(NULL);
                }
-               _strcpy(new_environ[indexs], environ[indexs])
+               _strcpys(new_environ[indexs], environ[indexs]);
         }
-        new_environ[indexs] == NULL;
+        new_environ[indexs] = NULL;
 
         return(new_environ);
 }
@@ -66,10 +66,10 @@ char **_getenv(const char *var)
 {
     int index, lens;
 
-    lens = -_strlen(var);
+    lens = -_strlens(var);
     for(index = 0; environ[index]; index++)
     {
-            if(_strncmp(var, environ[indx], lens) == 0)
+            if(_strncmps(var, environ[index], lens) == 0)
                     return(&environ[index]);
     }
 
