@@ -14,7 +14,8 @@
 #define EXIT -3
 
 /* Global environment*/
-extern char ** environ;
+extern char **environ;
+
 /* Global program name */
 char *name;
 /* Global history counter */
@@ -130,5 +131,5 @@ void help_setenv(void);
 void help_unsetenv(void);
 void help_history(void);
 
-int proc_file_commands(char * file_path, int *exe_ret);
+int proc_file_commands(char *file_path, int *exe_ret);
 #endif 
